@@ -8,13 +8,8 @@ from flask import jsonify
 from src.extensions import db
 from src.tasks.long_task import long_task
 
+
 home = Blueprint("home", __name__)
-
-
-@home.before_app_first_request
-def init_db():
-    db.create_all()
-
 
 @home.route("/")
 def index():

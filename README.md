@@ -15,36 +15,14 @@ based on [flask-celery-example by Miguel Grinberg](https://github.com/miguelgrin
 - /status/<task_id> - show the status of the long running task
 
 
-# installation
+# Running with docker-compose
 
-## install dependencies with [poetry](https://python-poetry.org/)
-``` bash
-poetry install
-poetry shell
-```
-
-## start redis backend (using docker)
-``` bash
-docker run -d --name redis -p 6379:6379 redis
+```bash
+docker compose build
+docker compose up -d
 ```
 
-## run celery worker
-```
-source .env
-celery -A src.worker:celery worker --loglevel=DEBUG
-```
-
-## run celery beat for periodic tasks
-```
-source .env
-celery -A src.worker:celery beat --loglevel=INFO
-```
-
-## run flask app
-``` bash
-source .env
-# check the available routes
-flask routes
-# start flask development server
-flask run
+# Viewing Logs
+```bash
+docker compose logs -f
 ```

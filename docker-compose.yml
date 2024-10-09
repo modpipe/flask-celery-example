@@ -1,0 +1,80 @@
+name: modpipe
+
+networks:
+  modpipe:
+    external: true
+  traefik:
+    external: true
+
+services:
+  modpipe:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: modpipe/base:latest
+    command: "flask run -h 0.0.0.0 -p 5000 --debug --reload"
+    depends_on:
+      - redis
+      - db
+    networks:
+      modpipe:
+      traefik:
+    ports:
+      - 5000:5000
+    restart: always
+    volumes:
+      - ./logs:/logs
+    env_file:
+      - path: ./env
+        required: true
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: modpipe/base:latest
+    command: "celery -A src.worker:celery worker --loglevel=DEBUG"
+    depends_on:
+      - redis
+      - db
+    networks:
+      modpipe:
+    restart: always
+    volumes:
+      - ./logs:/logs
+    env_file:
+      - path: ./env
+        required: true
+
+  beat:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: modpipe/base:latest
+    command: "celery -A src.worker:celery beat --loglevel=INFO"
+    depends_on:
+      - redis
+      - db
+    networks:
+      modpipe:
+    restart: always
+    volumes:
+      - ./logs:/logs
+    env_file:
+      - path: ./env
+        required: true
+  
+  db:
+    image: postgres:16
+    restart: always
+    env_file:
+      - path: ./env
+        required: true
+    networks:
+      modpipe:
+  
+  redis:
+    image: redis:7.2
+    restart: always
+    networks:
+      modpipe:

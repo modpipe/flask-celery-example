@@ -5,7 +5,6 @@ from src.app import create_worker_app
 from src.tasks.long_task import log
 from src.tasks.long_task import reverse_messages
 
-
 def create_celery(app):
     celery = Celery(
         app.import_name,
@@ -25,10 +24,8 @@ def create_celery(app):
     celery.Task = ContextTask
     return celery
 
-
 flask_app = create_worker_app()
 celery = create_celery(flask_app)
-
 
 @celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):

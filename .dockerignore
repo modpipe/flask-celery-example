@@ -1,0 +1,8 @@
+venv
+env
+.env
+logs
+docker
+docker-compose.yml
+.gitignore
+.git

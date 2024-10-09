@@ -1,0 +1,18 @@
+# Flask Variables
+FLASK_ENV="development"
+FLASK_APP="src.app:create_app"
+SECRET_KEY="change_me"
+DATABASE_URL="postgresql+psycopg2://modpipe:modpipe@db:5432/modpipe"
+
+
+# Postgres Database Variables
+POSTGRES_USER=modpipe
+POSTGRES_PASSWORD=modpipe
+POSTGRES_DB=modpipe
+POSTGRES_HOST=db
+
+
+# Celery Variables
+CELERY_TIMEZONE="America/Anchorage"
+CELERY_BROKER_URL="redis://redis"
+CELERY_RESULT_BACKEND="redis://redis"
